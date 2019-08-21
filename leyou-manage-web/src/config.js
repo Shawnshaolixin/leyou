@@ -1,5 +1,7 @@
-const baseUrl = 'http://api.leyou.com'
+const baseUrl = 'http://api.leyou.com:8088'
 const config = {
+  dev:{
+  },
   locale: 'zh-CN', // en-US, zh-CN
   url: baseUrl,
   debug: {

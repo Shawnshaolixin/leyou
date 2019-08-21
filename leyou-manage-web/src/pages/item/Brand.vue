@@ -70,8 +70,6 @@
 
 <script>
   import BrandForm from './BrandForm'
-  import {brandData} from '../../mockDB'
-
   export default {
     name: "brand",
     components: {
@@ -105,7 +103,7 @@
       },
       search: {
         handler() {
-          this.getDataFromApi();
+         this.getDataFromApi();
         }
       },
       show(val, oldVal) {
@@ -134,6 +132,7 @@
             this.brand.categories = resp.data;
           })
 
+
       },
       deleteBrand(item) {
         this.$message.confirm('此操作将永久删除该品牌, 是否继续?').then(() => {
@@ -150,13 +149,18 @@
 
       },
       getDataFromApi() {
-        this.loading = true;
-        // 200ms后返回假数据
-        window.setTimeout(() => {
-          this.items = brandData.slice(0,4);
-          this.totalItems = 100
-          this.loading = false;
-        }, 200)
+        this.loading = true
+        this.$http.get("/item/brand/page",{params:{
+            page: this.pagination.page, // 当前页
+            rows: this.pagination.rowsPerPage, // 每页条数
+            sortBy: this.pagination.sortBy, // 排序字段
+            desc: this.pagination.descending, // 是否降序
+            key: this.search}}).then(res => {
+            let data = res.data
+            this.totalItems = data.total;
+            this.items = data.items
+            this.loading = false
+        })
       }
     }
   }

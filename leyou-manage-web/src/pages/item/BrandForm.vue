@@ -53,12 +53,7 @@
       return {
         baseUrl: config.api,
         valid:false,
-        brand: {
-          name: "",
-          image: "",
-          letter: "",
-          categories: []
-        },
+        brand: this.oldBrand,
         imageDialogVisible:false
       }
     },

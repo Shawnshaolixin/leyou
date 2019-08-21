@@ -1,7 +1,10 @@
 package com.leyou.common.enums;
 
 public enum ExceptionEnum {
-    PRICE_NOT_BE_IS_NULL(400,"价格不能为空")
+    PRICE_NOT_BE_IS_NULL(400,"价格不能为空"),
+    BRAND_NOT_FOUND(404,"品牌没有找到"),
+    UPLOAD_FILE_ERROR(500,"文件上传错误"),
+    INVLID_FILE_TYPE(400,"无效的文件类型")
     ;
     private int status;
 
