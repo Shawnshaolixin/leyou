@@ -114,13 +114,15 @@
         }
         // 切换开闭状态
         this.open = !this.open;
-        // 如果已经是叶子节点,或者自己是关闭的，或者自己已经有儿子了，结束
-        if (!this.model.isParent || this.isFolder || !this.open) {
-          return;
-        }
+        // // 如果已经是叶子节点,或者自己是关闭的，或者自己已经有儿子了，结束
+        // if (!this.model.isParent || this.isFolder || !this.open) {
+        //   return;
+        // }
+        //
         // 展开后查询子节点
         this.$http.get(this.url, {params: {pid: this.model.id}})
           .then(resp => {
+
           Vue.set(this.model, 'children', resp.data);
           // 封装当前节点的路径
           this.model.children.forEach(n => {
@@ -148,6 +150,7 @@
         } else {
           if (!this.isFolder) {
             this.$http.get(this.url, {params: {pid: this.model.id}}).then(resp => {
+            debugger
               Vue.set(this.model, 'children', resp.data);
               this.model.children.push(child);
               this.open = true;

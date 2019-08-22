@@ -12,6 +12,18 @@ public class Category implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parentId=" + parentId +
+                ", isParent=" + isParent +
+                ", sort=" + sort +
+                '}';
+    }
+
     private Long parentId;
     private Boolean isParent; // 注意isParent生成的getter和setter方法需要手动加上Is
     private Integer sort;

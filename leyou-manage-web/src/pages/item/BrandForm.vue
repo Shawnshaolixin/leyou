@@ -14,7 +14,7 @@
       required
       mask="A"
     />
-    <v-cascader url="/item/category/list" required
+    <v-cascader url="/item/category/list" required multiple
                 v-model="brand.categories"
                 multiple label="商品分类"/>
     <v-layout row>
@@ -53,7 +53,12 @@
       return {
         baseUrl: config.api,
         valid:false,
-        brand: this.oldBrand,
+        brand:{
+          name:'',
+          letter:'',
+          image:'',
+          categories:[]
+        },
         imageDialogVisible:false
       }
     },
@@ -61,9 +66,17 @@
       oldBrand:{
         deep:true,
         handler(val){
-          Object.deepCopy(val,this.brand);
+          if(val){
+            this.brand=Object.deepCopy(val,this.oldBrand);
+          } else {
+            this.clear();
+          }
+
         }
       }
+    },
+    created () {
+
     },
     methods: {
       submit() {

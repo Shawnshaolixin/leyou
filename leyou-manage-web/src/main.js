@@ -14,6 +14,7 @@ import './assets/material.css'
 
 Vue.use(Vuetify, { theme: config.theme})
 Vue.use(MyComponent)
+
 Vue.prototype.$qs = qs;
 
 Vue.config.productionTip = false

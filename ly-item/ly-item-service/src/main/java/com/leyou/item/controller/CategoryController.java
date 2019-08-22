@@ -1,5 +1,7 @@
 package com.leyou.item.controller;
 
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.exception.LyException;
 import com.leyou.item.pojo.Category;
 import com.leyou.item.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,34 @@ public class CategoryController {
 
     @GetMapping("list")
     public ResponseEntity<List<Category>> list(@RequestParam(name="pid") Long pid){
-        List<Category> categories = categoryService.queryCategoryByPid(pid);
-        if(categories==null||categories.size()<=0){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //如果pid的值为-1那么需要获取数据库中最后一条数据
+        if (pid == -1){
+            List<Category> last = this.categoryService.queryLast();
+            return ResponseEntity.ok(last);
         }
-        return ResponseEntity.ok(categories);
+        else {
+            List<Category> list = this.categoryService.queryCategoryByPid(pid);
+            if (list == null) {
+                //没有找到返回404
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            //找到返回200
+            return ResponseEntity.ok(list);
+        }
+    }
+    @PostMapping("add")
+    public ResponseEntity<Boolean> add(Category category
+    ){
+        System.out.println("控制器==="+category.toString());
+        if(category.getId()>0){
+            categoryService.update(category);
+        }else {
+            Boolean add = categoryService.add(category);
+            if(add){
+                return ResponseEntity.ok(add);
+            }
+        }
+
+        throw new LyException(ExceptionEnum.CATEGORY_ADD_FAILED);
     }
 }

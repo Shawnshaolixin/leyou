@@ -64,7 +64,9 @@ public class BrandService {
      * @param id
      * @return
      */
-    public Brand getById(Integer id){
+    public Brand getById(Integer id)
+    {
+
         return brandMapper.selectByPrimaryKey(id);
     }
 

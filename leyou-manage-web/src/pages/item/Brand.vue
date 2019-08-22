@@ -122,16 +122,18 @@
         this.isEdit = false;
         this.show = true;
       },
-      editBrand(item) {
-        this.brand = item;
-        this.isEdit = true;
-        this.show = true;
-        // 查询商品分类信息，进行回显
-        this.$http.get("/item/category/bid/" + item.id)
-          .then(resp => {
-            this.brand.categories = resp.data;
-          })
-
+      editBrand(oldBrand){
+        //根据品牌信息查询商品分类
+          this.$http.get("/item/category/bid/"+oldBrand.id).then(
+            ({data}) => {
+              this.isEdit=true;
+              //显示弹窗
+              this.show=true;
+              //获取要编辑的brand
+              this.oldBrand=oldBrand;
+              this.oldBrand.categories = data;
+            }
+          ).catch();
 
       },
       deleteBrand(item) {
