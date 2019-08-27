@@ -92,7 +92,7 @@
 
 <script>
   import GoodsForm from './GoodsForm'
-  import {goodsData} from "../../mockDB";
+
 
   export default {
     name: "item",
@@ -202,11 +202,19 @@
       },
       getDataFromApi() {
         this.loading = true;
+        this.$http.get("/item/goods/spu/page",{
+          params:{
+          page: 1,rows:10,saleable:false
+          }}).then(res=>{
+          if(res.data.result){
+            console.log(res.data.message)
+          }else {
+            console.log(res.data.message)
+          }
+        })
         setTimeout(() => {
           // 返回假数据
-          this.items = goodsData.slice(0, 4);
-          this.totalItems = 25;
-          this.loading = false;
+
         }, 300)
       }
     }
