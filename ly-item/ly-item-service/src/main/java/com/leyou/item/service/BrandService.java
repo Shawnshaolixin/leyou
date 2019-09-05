@@ -10,6 +10,7 @@ import com.leyou.item.pojo.Brand;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -23,6 +24,7 @@ public class BrandService {
 
     /**
      * 分页查询
+     *
      * @param page
      * @param rows
      * @param sortBy
@@ -32,7 +34,7 @@ public class BrandService {
      */
     public PageResult<Brand> queryBrandByPageAndSort(
             Integer page, Integer rows, String sortBy, Boolean desc, String key
-    ){
+    ) {
         // 开始分页
         PageHelper.startPage(page, rows);
         // 过滤
@@ -47,10 +49,10 @@ public class BrandService {
             example.setOrderByClause(orderByClause);
         }
         // 查询
-      //  Page<Brand> pageInfo = (Page<Brand>) brandMapper.selectByExample(example);
+        //  Page<Brand> pageInfo = (Page<Brand>) brandMapper.selectByExample(example);
         List<Brand> brands = brandMapper.selectByExample(example);
 
-        if(CollectionUtils.isEmpty(brands)){
+        if (CollectionUtils.isEmpty(brands)) {
             throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
         }
         PageInfo<Brand> info = new PageInfo<>(brands);
@@ -61,23 +63,38 @@ public class BrandService {
 
     /**
      * 根据Id获取品牌
+     *
      * @param id
      * @return
      */
-    public Brand getById(Integer id)
-    {
+    public Brand getById(Integer id) {
 
         return brandMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 更新品牌
+     *
      * @param brand
      * @return
      */
-    public boolean update(Brand brand){
+    public boolean update(Brand brand) {
         int i = brandMapper.updateByPrimaryKey(brand);
-        return i>0;
+        return i > 0;
+    }
+
+    /**
+     * 新增品牌
+     * @param brand
+     * @param categoryId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean add(Brand brand, Long categoryId) {
+        brand.setId(null);
+        int insert = brandMapper.insert(brand);
+        brandMapper.insert_brand_category(categoryId, brand.getId());
+        return insert > 0;
     }
 
 }

@@ -2,8 +2,10 @@ package com.leyou.item.controller;
 
 import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exception.LyException;
+import com.leyou.common.vo.ApiResult;
 import com.leyou.item.pojo.Category;
 import com.leyou.item.service.CategoryService;
+import com.leyou.item.vo.CategoryTreeData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +44,11 @@ public class CategoryController {
             //找到返回200
             return ResponseEntity.ok(list);
         }
+    }
+    @GetMapping("tree")
+    public ApiResult<List<CategoryTreeData>> getAll(){
+        List<CategoryTreeData> categoryTreeData = categoryService.queryTreeData((long) 0);
+        return ApiResult.ok(categoryTreeData);
     }
     @PostMapping("add")
     public ResponseEntity<Boolean> add(Category category

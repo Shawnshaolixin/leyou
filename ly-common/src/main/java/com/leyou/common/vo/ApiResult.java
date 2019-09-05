@@ -13,6 +13,10 @@ public class ApiResult<T> {
         this.data = data;
         this.message ="操作成功";
     }
+    public ApiResult(Boolean result){
+        this.result =true;
+        this.message = "操作成功";
+    }
 
     public   ApiResult(Boolean result, T data, String message) {
         this.result = result;
@@ -22,6 +26,9 @@ public class ApiResult<T> {
 
     public static ApiResult ok(Object data){
         return new ApiResult(true,data);
+    }
+    public static ApiResult ok(){
+        return  new ApiResult(true);
     }
     public static ApiResult error(String message){
         return new ApiResult(false,null,message);

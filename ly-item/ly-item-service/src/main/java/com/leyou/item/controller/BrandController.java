@@ -1,5 +1,6 @@
 package com.leyou.item.controller;
 
+import com.leyou.common.vo.ApiResult;
 import com.leyou.common.vo.PageResult;
 import com.leyou.item.pojo.Brand;
 import com.leyou.item.service.BrandService;
@@ -45,5 +46,10 @@ public class BrandController {
             return ResponseEntity.ok(result);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @PostMapping("add")
+    public ApiResult<Void> add(Brand brand,@RequestParam("cid") Long cid) {
+        this.brandService.add(brand,cid);
+        return ApiResult.ok();
     }
 }
